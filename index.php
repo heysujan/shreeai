@@ -1,30 +1,3 @@
-<?php
-include("template/front/header.php");
-include("template/front/navbar.php");
-include("config/database.php");
-?>
-
-<?php
-// Fetch the latest popup (you can modify this query as needed)
-$statement = $conn->query('SELECT * FROM popups ORDER BY id DESC LIMIT 1');
-$popup = $statement->fetch(PDO::FETCH_ASSOC);
-
-$i = 1;
-$statement = $conn->prepare('SELECT * FROM about ORDER BY about_id DESC');
-$statement->execute();
-$about = $statement->fetchAll(PDO::FETCH_ASSOC);
-$sNo  = 1;
-foreach ($about as $about);
-
-$statement = $conn->query('SELECT st.*, m.file_name as music_file FROM stories_text_music_image st INNER JOIN music m ON st.music_id = m.id ORDER BY upload_time DESC LIMIT 10');
-$stories = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-// Increment views and update the database
-foreach ($stories as $story) {
-    $storyId = $story['id'];
-    $conn->query("UPDATE stories_text_music_image SET views = views + 1 WHERE id = $storyId");
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,91 +22,7 @@ foreach ($stories as $story) {
 <body>
 
 
-<!-- STORIES SECTION STARTS -->
-<!-- <section class="stories-section title-stories">
-    <h2 class="stories-header">STORIES:</h2>
-</section>
-<section class="stories-section">
-    <div id="stories-container" class="stories-container">
-        <?php
-        // Check if there are any stories
-        foreach ($stories as $story) {
-            $imageSrc = "storage/story/{$story['image_file_name']}";
-            $bgColor = $story['bg_color'];
-            $imageExists = file_exists($imageSrc) && $story['image_file_name'] !== 'default.png';
-        ?>
-        <div class="story" 
-            data-story-id="<?php echo $story['id']; ?>" 
-            data-bg-color="<?php echo $story['bg_color']; ?>" 
-            data-text-color="<?php echo $story['text_color']; ?>" 
-            data-music-url="storage/music/<?php echo $story['music_file']; ?>" 
-            data-image-file="<?php echo $story['image_file_name']; ?>" 
-            data-image-exists="<?php echo $imageExists ? 'true' : 'false'; ?>">
-            <div class="outer-layer" style="background-color: transparent; color: <?php echo $story['text_color']; ?>;">
-                <?php if ($imageExists) { ?>
-                    <img class="story-image" src="<?php echo $imageSrc; ?>" alt="Story Image" data-src="<?php echo $imageSrc; ?>">
-                <?php } ?>
-                <div class="story-views">
-                    <i class="fas fa-eye"></i>
-                    <span class="view-count" data-story-id="<?php echo $story['id']; ?>">
-                        <?php echo $story['views']; ?>
-                    </span>
-                </div>
-                <p class="story-text"><?php echo $story['story_text']; ?></p>
-            </div>
-        </div>
-        <?php
-        } 
-        ?>
-    </div>
-    <div id="selected-story-container">
-        <div class="story-overlay">
-            <div class="close-btn" id="close-btn"><i class="fas fa-times"></i></div>
-            <div class="swipe-btn left" id="swipe-left"><i class="fas fa-chevron-left"></i></div>
-            <p id="selected-story-text" class="textt" style="color: white;
-                height: fit-content;
-                min-width: 250px;
-                max-width: 350px;
-                min-height: fit-content;
-                padding: 4px;
-                border-radius: 5px;
-                text-align: center;
-                display: flex;
-                justify-content: center;
-                vertical-align: middle;
-                align-items: center;
-                font-size: 24px;"></p> -->
 
-            <!-- Display views with icon in the 200x250px box -->
-           
-            <!-- <div class="view-count-selected">
-                <i class="fas fa-eye"></i>
-                <span id="selected-view-count">0</span>
-            </div>
-            <div class="swipe-btn right" id="swipe-right"><i class="fas fa-chevron-right"></i></div>
-        </div>
-    </div>
-</section>
-<script src="assets/js/story.js"></script> -->
-<!-- STORIES SECTION STOPS -->
-
-
-<!-- TRACKER STARTS HERE -->
-    <!-- Circle at bottom right -->
-    <div id="circleTracker">
-        <i id="eyeIcon" class="fa-regular fa-eye-slash"></i>
-        <div id="betaTextTracker">BETA</div>
-    </div>
-
-    <!-- Popup for displaying visitor information -->
-    <div id="popupTracker">
-        <span id="closeBtnTracker" onclick="closeTrackerPopup()">&times;</span>
-        <h2>Your Information :</h2>
-        <p id="popupContentTracker" class="info-containerTracker"></p>
-    </div>
-        <script src="assets/js/tracker.js"></script>
-        <!-- TRACKER CONTENT ENDS  -->
-        
          <!-- SHREE AI CONTENT STARTS  -->
 
 <!-- SHREE AI CONTENT STARTS  -->
@@ -168,6 +57,9 @@ foreach ($stories as $story) {
         </div>
     </div>
     <style>
+        body{
+            background:black;
+        }
         body.not-authorized {
             display: none;
         }
@@ -195,26 +87,11 @@ pk{
 }
 
     </style>
-<!--<script>-->
-    <!-- // Prompt the user for the access code -->
-<!--    var accessCode = prompt("Enter the access code:");-->
 
-    <!-- // Check if the access code is correct -->
-<!--    if (accessCode === "Sujan1919") {-->
-        <!-- // The access code is correct, show the content -->
-<!--        document.body.classList.remove("not-authorized");-->
-<!--    } else {-->
-        <!-- // The access code is incorrect, show an error message and hide the content -->
-<!--        alert("Access denied! Incorrect access code.");-->
-<!--        document.body.classList.add("not-authorized");-->
-<!--    }-->
-<!--</script>-->
-
-    <script src="assets/js/shreeAI.js"></script>
+    <script src="assets/js/ai.js"></script>
     <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
     <script src="https://cdn.rawgit.com/zhuker/lamejs/9df36d04/lame.all.js"></script>
     <!-- SHREE AI CONTENT ENDS  -->
-    <?php include("template/front/navbar.php"); ?>
 
   
 </body>
